@@ -13,9 +13,6 @@ import ToastService from "primevue/toastservice";
 
 import Toast from 'primevue/toast'; // ✅ import Toast component
 
-import AppState from './Plugins/appState';
-
-
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
@@ -41,7 +38,6 @@ createInertiaApp({
                     }
                 }
             })
-            .use(AppState)
             .use(ToastService); // ✅ Use the toast service
 
         vueApp.component('Toast', Toast); // ✅ Register Toast component globally
