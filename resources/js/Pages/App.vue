@@ -1,15 +1,20 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, toRaw } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
+// import Card from 'primevue/card';
+import Fieldset from 'primevue/fieldset';
+import { Form } from '@primevue/forms';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 import { useToast } from "primevue/usetoast";
+import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 import { CustomerService } from '@/Service/CustomerService';
 
 const toast = useToast();
@@ -17,16 +22,79 @@ const toast = useToast();
 const onShowModal = ref(false);
 const onModalText = ref("");
 
+const formValues = ref({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+});
 
-const show = () => {
-    toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 2000 });
+const validation = ({ values }) => {
+    const errors = {
+        name: [],
+        email: [],
+        phone: [],
+        address: [],
+    };
+
+    if (!values.name) {
+        errors.name.push({ type: 'required', message: 'name is required.' });
+    }
+
+    if (!values.email) {
+        errors.email.push({ type: 'required', message: 'email is required.' });
+    }
+
+    if (!values.phone) {
+        errors.phone.push({ type: 'required', message: 'phone is required.' });
+    }
+
+    if (!values.address) {
+        errors.address.push({ type: 'required', message: 'address is required.' });
+    }
+
+    return {
+        values,
+        errors
+    };
 };
+
+const onFormSubmit = async ({ valid }) => {
+    if (valid) {
+        await submitActions({
+            title: 'Submit Form?',
+            text: 'Are you sure you want to submit?',
+            icon: 'warning',
+            axiosConfig: {
+                method: 'post',
+                url: 'api/userdetails',
+                data: toRaw(formValues._value),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            },
+            onBefore: () => {
+                showLoader('Please wait...');
+            },
+            onSuccess: (response) => {
+                console.log('Success response:', response.data);
+                onShowModal.value = false;
+            },
+            onError: (error) => {
+                hideLoader();
+                console.error('Error occurred:', error);
+            }
+        });
+
+    }
+}
+
+
 
 const customers = ref();
 onMounted(() => {
     CustomerService.getCustomersMedium().then((data) => (customers.value = data));
 });
-
 
 </script>
 
@@ -43,48 +111,59 @@ onMounted(() => {
                         <span class="font-bold whitespace-nowrap">{{ onModalText }}</span>
                     </div>
                 </template>
-                <div class="flex flex-col gap-3">
-                    <div class="flex flex-col gap-1">
-                        <label for="name" class="font-semibold w-24">Name</label>
-                        <InputText id="name" class="flex-auto" autocomplete="off" />
+
+
+                <Form v-slot="$form" :formValues :resolver="validation" @submit="onFormSubmit">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex flex-col gap-1">
+                            <label for="name" class="font-semibold w-24">Name</label>
+                            <InputText v-model="formValues.name" id="name" name="name" class="flex-auto" autocomplete="off" />
+                            <span class="text-red-500">{{ $form.name?.error?.message }}</span>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="email" class="font-semibold w-24">Email</label>
+                            <InputText v-model="formValues.email" id="email" name="email" class="flex-auto" autocomplete="off" />
+                            <span class="text-red-500">{{ $form.email?.error?.message }}</span>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="phone" class="font-semibold w-24">Phone</label>
+                            <InputText v-model="formValues.phone" id="phone" name="phone" class="flex-auto" autocomplete="off" />
+                            <span class="text-red-500">{{ $form.phone?.error?.message }}</span>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="address" class="font-semibold w-24">Address</label>
+                            <InputText v-model="formValues.address" id="address" name="address" class="flex-auto" autocomplete="off" />
+                            <span class="text-red-500">{{ $form.address?.error?.message }}</span>
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <label for="email" class="font-semibold w-24">Email</label>
-                        <InputText id="email" class="flex-auto" autocomplete="off" />
+
+                    <div class="flex justify-end mt-5">
+                        <Button label="Cancel" text severity="secondary" @click="onShowModal = false" autofocus />
+                        <Button type="submit" label="Save" severity="info" autofocus />
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <label for="phone" class="font-semibold w-24">Phone</label>
-                        <InputText id="phone" class="flex-auto" autocomplete="off" />
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label for="address" class="font-semibold w-24">Address</label>
-                        <InputText id="address" class="flex-auto" autocomplete="off" />
-                    </div>
-                </div>
-                <template #footer>
-                    <Button label="Cancel" text severity="secondary" @click="onShowModal = false" autofocus />
-                    <Button label="Save" severity="info" @click="onShowModal = false" autofocus />
-                </template>
+                </Form>
+
+
             </Dialog>
         </div>
     </div>
 
     <div class="p-5 mt-10">
-        <DataTable :value="customers" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]"
-            tableStyle="min-width: 50rem"
-            paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-            currentPageReportTemplate="{first} to {last} of {totalRecords}">
-            <template #paginatorstart>
-                <Button type="button" icon="pi pi-refresh" text />
-            </template>
-            <template #paginatorend>
-                <Button type="button" icon="pi pi-download" text />
-            </template>
-            <Column field="name" header="Name" style="width: 25%"></Column>
-            <Column field="country.name" header="Country" style="width: 25%"></Column>
-            <Column field="company" header="Company" style="width: 25%"></Column>
-            <Column field="representative.name" header="Representative" style="width: 25%"></Column>
-        </DataTable>
+            <DataTable :value="customers" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]"
+                tableStyle="min-width: 50rem"
+                paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                currentPageReportTemplate="{first} to {last} of {totalRecords}">
+                <template #paginatorstart>
+                    <Button type="button" icon="pi pi-refresh" text />
+                </template>
+                <template #paginatorend>
+                    <Button type="button" icon="pi pi-download" text />
+                </template>
+                <Column field="name" header="Name" style="width: 25%"></Column>
+                <Column field="country.name" header="Email" style="width: 25%"></Column>
+                <Column field="company" header="Phone" style="width: 25%"></Column>
+                <Column field="representative.name" header="Address" style="width: 25%"></Column>
+            </DataTable>
     </div>
 
     <!-- <Button label="Show" @click="show()" />
