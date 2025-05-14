@@ -2,15 +2,15 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { ref, onMounted, toRaw } from 'vue';
 
-import 'primeicons/primeicons.css'
+// import 'primeicons/primeicons.css'
 
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import { Form } from '@primevue/forms';
+// import Button from 'primevue/button';
+// import Dialog from 'primevue/dialog';
+// import InputText from 'primevue/inputtext';
+// import { Form } from '@primevue/forms';
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+// import DataTable from 'primevue/datatable';
+// import Column from 'primevue/column';
 
 // import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 
