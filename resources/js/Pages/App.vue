@@ -220,30 +220,22 @@ onMounted(() => {
                         <div class="flex flex-col gap-3">
                             <div class="flex flex-col gap-1">
                                 <label for="name" class="font-semibold w-24">Name</label>
-                                <InputText v-model="formValues.name" id="name"
-                                    :name="onModalText === 'Update User' ? (!formValues.name ? 'name' : formValues.name) : 'name'"
-                                    class="flex-auto" autocomplete="off" />
+                                <InputText v-model="formValues.name" id="name" name="name" class="flex-auto" autocomplete="off" />
                                 <span class="text-red-500">{{ $form.name?.error?.message }}</span>
                             </div>
                             <div class="flex flex-col gap-1">
                                 <label for="email" class="font-semibold w-24">Email</label>
-                                <InputText v-model="formValues.email" id="email"
-                                    :name="onModalText === 'Update User' ? (!formValues.email ? 'email' : formValues.email) : 'email'"
-                                    class="flex-auto" autocomplete="off" />
+                                <InputText v-model="formValues.email" id="email" name="email" class="flex-auto" autocomplete="off" />
                                 <span class="text-red-500">{{ $form.email?.error?.message }}</span>
                             </div>
                             <div class="flex flex-col gap-1">
                                 <label for="phone" class="font-semibold w-24">Phone</label>
-                                <InputText v-model="formValues.phone" id="phone"
-                                    :name="onModalText === 'Update User' ? (!formValues.phone ? 'phone' : formValues.phone) : 'phone'"
-                                    class="flex-auto" autocomplete="off" />
+                                <InputText v-model="formValues.phone" id="phone" name="phone" class="flex-auto" autocomplete="off" />
                                 <span class="text-red-500">{{ $form.phone?.error?.message }}</span>
                             </div>
                             <div class="flex flex-col gap-1">
                                 <label for="address" class="font-semibold w-24">Address</label>
-                                <InputText v-model="formValues.address" id="address"
-                                    :name="onModalText === 'Update User' ? (!formValues.address ? 'address' : formValues.address) : 'address'"
-                                    class="flex-auto" autocomplete="off" />
+                                <InputText v-model="formValues.address" id="address" name="address" class="flex-auto" autocomplete="off" />
                                 <span class="text-red-500">{{ $form.address?.error?.message }}</span>
                             </div>
                         </div>
