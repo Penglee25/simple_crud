@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { nextTick } from "vue";
 
 export async function submitActions({
     title = "Confirmation",
@@ -16,8 +17,8 @@ export async function submitActions({
     onError,
     onBefore,
 }) {
-
     try {
+        await nextTick(); // Or use await new Promise(r => setTimeout(r, 0));
         const result = await Swal.fire({
             title: title,
             text: text,
@@ -29,12 +30,7 @@ export async function submitActions({
             cancelButtonColor: cancelButtonColor,
             showCancelButton: true,
             reverseButtons: reverseButtons,
-            didOpen: () => {
-                const popup = Swal.getPopup();
-                const container = Swal.getContainer();
-                if (popup) popup.style.zIndex = "9999";
-                if (container) container.style.zIndex = "9998";
-            },
+           
         });
 
         if (!result.isConfirmed) return;
@@ -54,7 +50,7 @@ export async function submitActions({
         if (onSuccess) onSuccess(response);
     } catch (error) {
         console.log(error);
-        
+
         Swal.fire({
             position: "top-end",
             icon: "error",
@@ -80,10 +76,6 @@ export function showLoader(message) {
         timerProgressBar: true,
         didOpen: () => {
             Swal.showLoading();
-            const popup = Swal.getPopup();
-            const container = Swal.getContainer();
-            if (popup) popup.style.zIndex = "9999";
-            if (container) container.style.zIndex = "9998";
         },
     });
 }
