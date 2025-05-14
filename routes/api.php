@@ -15,4 +15,7 @@ use App\Http\Controllers\Api\UserDetailsController;
 |
 */
 
-Route::apiResource('userdetails', UserDetailsController::class);
+Route::get('userdetails/fetch', [UserDetailsController::class, 'fetch']);
+Route::post('userdetails/store', [UserDetailsController::class, 'store']);
+Route::delete('userdetails/destroy/{id}', [UserDetailsController::class, 'destroy']);
+// Route::apiResource('userdetails', UserDetailsController::class);

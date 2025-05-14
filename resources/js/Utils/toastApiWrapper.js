@@ -53,6 +53,8 @@ export async function submitActions({
 
         if (onSuccess) onSuccess(response);
     } catch (error) {
+        console.log(error);
+        
         Swal.fire({
             position: "top-end",
             icon: "error",

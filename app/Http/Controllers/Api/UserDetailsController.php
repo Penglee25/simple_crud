@@ -10,6 +10,11 @@ use App\Models\UserDetails;
 class UserDetailsController extends Controller
 {
 
+    public function fetch()
+    {
+        return UserDetails::all();
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -45,9 +50,8 @@ class UserDetailsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
     }
 
     /**
@@ -61,8 +65,15 @@ class UserDetailsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        if (!$id) {
+            abort(403);
+        }
+
+        UserDetails::find($id)->delete();
+
+        return response('User successfully deleted.', 200)
+            ->header('Content-Type', 'text/plain');
     }
 }
