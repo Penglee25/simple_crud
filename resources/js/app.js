@@ -9,10 +9,6 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
 
-import ToastService from "primevue/toastservice";
-
-import Toast from 'primevue/toast'; // ✅ import Toast component
-
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
@@ -38,11 +34,7 @@ createInertiaApp({
                     }
                 }
             })
-            .use(ToastService); // ✅ Use the toast service
-
-        vueApp.component('Toast', Toast); // ✅ Register Toast component globally
-
-        return vueApp.mount(el);
+            .mount(el);
     },
     progress: {
         color: "#4B5563",
