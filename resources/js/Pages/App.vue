@@ -2,12 +2,18 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { ref, onMounted, toRaw } from 'vue';
 
+import Modal from '@/Components/Modal.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+
 import 'primeicons/primeicons.css'
 
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import { Form } from '@primevue/forms';
+// import Button from 'primevue/button';
+// import Dialog from 'primevue/dialog';
+// import InputText from 'primevue/inputtext';
+// import { Form } from '@primevue/forms';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -86,18 +92,16 @@ const fetchData = async () => {
     }
 }
 
-const onFormSubmit = ({ valid }) => {
+const onFormSubmit = () => {
 
-    if (valid) {
-        if (onModalText.value === 'Create User') {
-            onFormCreate();
-        }
-
-        if (onModalText.value === 'Update User') {
-            onFormUpdate(formValues);
-        }
-
+    if (onModalText.value === 'Create User') {
+        onFormCreate();
     }
+
+    if (onModalText.value === 'Update User') {
+        onFormUpdate(formValues);
+    }
+
 }
 
 const onFormCreate = async () => {
@@ -203,8 +207,58 @@ onMounted(() => {
     <Head title="CRUD" />
     TANGINA MO
     <div class="text-center mt-10">
-        <Button label="Create User" @click="onShowModal = true; onModalText = 'Create User'" />
-        <div class="card flex justify-center">
+        <PrimaryButton label="Create User" @click="onShowModal = true; onModalText = 'Create User'">
+            Create User
+        </PrimaryButton>
+
+        <Modal :show="onShowModal">
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    {{ onModalText }}
+                </h2>
+
+                <hr class="my-3" />
+
+                <form @submit.prevent="onFormSubmit">
+
+
+                    <div class="flex flex-col gap-3">
+                        <div class="relative">
+                            <InputLabel for="name" value="Name" required/>
+                            <TextInput v-model="formValues.name" type="text" id="name" class="w-full mt-1" required/>
+                        </div>
+
+                        <div class="relative">
+                            <InputLabel for="email" value="Email" required/>
+                            <TextInput v-model="formValues.email" type="text" id="email" class="w-full mt-1" required/>
+                        </div>
+
+                        <div class="relative">
+                            <InputLabel for="phone" value="Phone" required/>
+                            <TextInput v-model="formValues.phone" type="text" id="phone" class="w-full mt-1" required/>
+                        </div>
+
+                        <div class="relative">
+                            <InputLabel for="address" value="Address" required/>
+                            <TextInput v-model="formValues.address" type="text" id="address" class="w-full mt-1" required/>
+                        </div>
+                    </div>
+
+
+                    <div class="mt-6 flex justify-end">
+                        <SecondaryButton @click="onCancelModal">
+                            Cancel
+                        </SecondaryButton>
+                        <button type="submit"
+                            class="bg-indigo-500 text-white rounded-lg px-3 py-1 ml-2 hover:bg-indigo-700 transition ease-in-out duration-150">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </Modal>
+
+        <!-- <div class="card flex justify-center">
             <Dialog v-model:visible="onShowModal" modal header="Edit Profile" :style="{ width: '25rem' }">
                 <template #header>
                     <div class="inline-flex items-center justify-center gap-2">
@@ -213,51 +267,51 @@ onMounted(() => {
                 </template>
 
 
-                <Form v-slot="$form" :formValues :resolver="validation" @submit="onFormSubmit">
-                    <div class="flex flex-col gap-3">
-                        <div class="flex flex-col gap-1">
-                            <label for="name" class="font-semibold w-24">Name</label>
-                            <InputText v-model="formValues.name" id="name"
-                                :name="onModalText === 'Update User' ? (!formValues.name ? 'name' : formValues.name) : 'name'"
-                                class="flex-auto" autocomplete="off" />
-                            <span class="text-red-500">{{ $form.name?.error?.message }}</span>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label for="email" class="font-semibold w-24">Email</label>
-                            <InputText v-model="formValues.email" id="email"
-                                :name="onModalText === 'Update User' ? (!formValues.email ? 'email' : formValues.email) : 'email'"
-                                class="flex-auto" autocomplete="off" />
-                            <span class="text-red-500">{{ $form.email?.error?.message }}</span>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label for="phone" class="font-semibold w-24">Phone</label>
-                            <InputText v-model="formValues.phone" id="phone"
-                                :name="onModalText === 'Update User' ? (!formValues.phone ? 'phone' : formValues.phone) : 'phone'"
-                                class="flex-auto" autocomplete="off" />
-                            <span class="text-red-500">{{ $form.phone?.error?.message }}</span>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label for="address" class="font-semibold w-24">Address</label>
-                            <InputText v-model="formValues.address" id="address"
-                                :name="onModalText === 'Update User' ? (!formValues.address ? 'address' : formValues.address) : 'address'"
-                                class="flex-auto" autocomplete="off" />
-                            <span class="text-red-500">{{ $form.address?.error?.message }}</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end mt-5">
-                        <Button label="Cancel" text severity="secondary" @click="onCancelModal()" autofocus />
-                        <Button type="submit" :label="onModalText === 'Update User' ? 'Update' : 'Save'"
-                            :loading="onLoadingSubmit" severity="info" autofocus />
-                    </div>
-                </Form>
-
-
-            </Dialog>
+<Form v-slot="$form" :formValues :resolver="validation" @submit="onFormSubmit">
+    <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-1">
+            <label for="name" class="font-semibold w-24">Name</label>
+            <InputText v-model="formValues.name" id="name"
+                :name="onModalText === 'Update User' ? (!formValues.name ? 'name' : formValues.name) : 'name'"
+                class="flex-auto" autocomplete="off" />
+            <span class="text-red-500">{{ $form.name?.error?.message }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="email" class="font-semibold w-24">Email</label>
+            <InputText v-model="formValues.email" id="email"
+                :name="onModalText === 'Update User' ? (!formValues.email ? 'email' : formValues.email) : 'email'"
+                class="flex-auto" autocomplete="off" />
+            <span class="text-red-500">{{ $form.email?.error?.message }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="phone" class="font-semibold w-24">Phone</label>
+            <InputText v-model="formValues.phone" id="phone"
+                :name="onModalText === 'Update User' ? (!formValues.phone ? 'phone' : formValues.phone) : 'phone'"
+                class="flex-auto" autocomplete="off" />
+            <span class="text-red-500">{{ $form.phone?.error?.message }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="address" class="font-semibold w-24">Address</label>
+            <InputText v-model="formValues.address" id="address"
+                :name="onModalText === 'Update User' ? (!formValues.address ? 'address' : formValues.address) : 'address'"
+                class="flex-auto" autocomplete="off" />
+            <span class="text-red-500">{{ $form.address?.error?.message }}</span>
         </div>
     </div>
 
-    <div class="p-5 mt-10 text-center">
+    <div class="flex justify-end mt-5">
+        <Button label="Cancel" text severity="secondary" @click="onCancelModal()" autofocus />
+        <Button type="submit" :label="onModalText === 'Update User' ? 'Update' : 'Save'" :loading="onLoadingSubmit"
+            severity="info" autofocus />
+    </div>
+</Form>
+
+
+</Dialog>
+</div> -->
+    </div>
+
+    <!-- <div class="p-5 mt-10 text-center">
         <DataTable :value="userCollection" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]"
             tableStyle="min-width: 50rem"
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
@@ -283,7 +337,7 @@ onMounted(() => {
                 <span >No Users found.</span>
             </template>
         </DataTable>
-    </div>
+    </div> -->
 
-   
+
 </template>
