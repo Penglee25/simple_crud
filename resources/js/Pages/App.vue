@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+// import { Head, Link } from '@inertiajs/vue3';
 // import { ref, onMounted, toRaw } from 'vue';
 
 // import 'primeicons/primeicons.css'
@@ -200,7 +200,7 @@ import { Head, Link } from '@inertiajs/vue3';
 
 <template>
 
-    <Head title="CRUD" />
+    <!-- <Head title="CRUD" /> -->
     TANGINA MO
     <!-- <div class="text-center mt-10">
         <Button label="Create User" @click="onShowModal = true; onModalText = 'Create User'" />
