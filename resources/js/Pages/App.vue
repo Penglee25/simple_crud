@@ -12,7 +12,7 @@ import { Form } from '@primevue/forms';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
-import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
+// import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 
 const onShowModal = ref(false);
 const onModalText = ref("");
@@ -57,144 +57,144 @@ const validation = ({ values }) => {
     };
 };
 
-const onShowModalUpdate = (data) => {
-    onShowModal.value = true;
-    onModalText.value = 'Update User';
-    formValues.value.id = data.id;
-    formValues.value.name = data.name;
-    formValues.value.email = data.email;
-    formValues.value.phone = data.phone;
-    formValues.value.address = data.address;
-}
+// const onShowModalUpdate = (data) => {
+//     onShowModal.value = true;
+//     onModalText.value = 'Update User';
+//     formValues.value.id = data.id;
+//     formValues.value.name = data.name;
+//     formValues.value.email = data.email;
+//     formValues.value.phone = data.phone;
+//     formValues.value.address = data.address;
+// }
 
-const onCancelModal = () => {
-    onShowModal.value = false;
-    formValues.value.id = null;
-    formValues.value.name = '';
-    formValues.value.email = '';
-    formValues.value.phone = '';
-    formValues.value.address = '';
-}
+// const onCancelModal = () => {
+//     onShowModal.value = false;
+//     formValues.value.id = null;
+//     formValues.value.name = '';
+//     formValues.value.email = '';
+//     formValues.value.phone = '';
+//     formValues.value.address = '';
+// }
 
-const fetchData = async () => {
+// const fetchData = async () => {
 
-    try {
-        const response = await axios.get('api/userdetails/fetch');
-        userCollection.value = response.data;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-    }
-}
+//     try {
+//         const response = await axios.get('api/userdetails/fetch');
+//         userCollection.value = response.data;
+//     } catch (error) {
+//         console.error('Error fetching users:', error);
+//     }
+// }
 
-const onFormSubmit = ({ valid }) => {
+// const onFormSubmit = ({ valid }) => {
 
-    if (valid) {
-        if (onModalText.value === 'Create User') {
-            onFormCreate();
-        }
+//     if (valid) {
+//         if (onModalText.value === 'Create User') {
+//             onFormCreate();
+//         }
 
-        if (onModalText.value === 'Update User') {
-            onFormUpdate(formValues);
-        }
+//         if (onModalText.value === 'Update User') {
+//             onFormUpdate(formValues);
+//         }
 
-    }
-}
+//     }
+// }
 
-const onFormCreate = async () => {
+// const onFormCreate = async () => {
 
-    await submitActions({
-        title: 'Submit Form?',
-        text: 'Are you sure you want to submit?',
-        icon: 'warning',
-        axiosConfig: {
-            method: 'post',
-            url: 'api/userdetails/store',
-            data: toRaw(formValues._value),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        },
-        onBefore: () => {
-            showLoader('Please wait...');
-        },
-        onSuccess: (response) => {
-            fetchData();
-            onShowModal.value = false;
-            formValues.value.name = '';
-            formValues.value.email = '';
-            formValues.value.phone = '';
-            formValues.value.address = '';
-        },
-        onError: (error) => {
-            hideLoader();
-            console.error('Error occurred:', error);
-        }
-    });
+//     await submitActions({
+//         title: 'Submit Form?',
+//         text: 'Are you sure you want to submit?',
+//         icon: 'warning',
+//         axiosConfig: {
+//             method: 'post',
+//             url: 'api/userdetails/store',
+//             data: toRaw(formValues._value),
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         },
+//         onBefore: () => {
+//             showLoader('Please wait...');
+//         },
+//         onSuccess: (response) => {
+//             fetchData();
+//             onShowModal.value = false;
+//             formValues.value.name = '';
+//             formValues.value.email = '';
+//             formValues.value.phone = '';
+//             formValues.value.address = '';
+//         },
+//         onError: (error) => {
+//             hideLoader();
+//             console.error('Error occurred:', error);
+//         }
+//     });
 
-}
+// }
 
 
-const onFormUpdate = async (form) => {
+// const onFormUpdate = async (form) => {
 
-    const plainValues = toRaw(form._value)
+//     const plainValues = toRaw(form._value)
 
-    await submitActions({
-        title: "Are you sure?",
-        text: "Update User?",
-        icon: 'info',
-        axiosConfig: {
-            method: 'put',
-            url: 'api/userdetails/update/' + form._value.id,
-            data: plainValues,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        },
-        onBefore: () => {
-            showLoader('Updating...');
-        },
-        onSuccess: (response) => {
-            fetchData();
-            onShowModal.value = false;
-            onModalText.value = '';
-            formValues.value.name = '';
-            formValues.value.email = '';
-            formValues.value.phone = '';
-            formValues.value.address = '';
-        },
-        onError: (error) => {
-            hideLoader();
-            console.error('Error occurred:', error);
-        }
-    });
+//     await submitActions({
+//         title: "Are you sure?",
+//         text: "Update User?",
+//         icon: 'info',
+//         axiosConfig: {
+//             method: 'put',
+//             url: 'api/userdetails/update/' + form._value.id,
+//             data: plainValues,
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         },
+//         onBefore: () => {
+//             showLoader('Updating...');
+//         },
+//         onSuccess: (response) => {
+//             fetchData();
+//             onShowModal.value = false;
+//             onModalText.value = '';
+//             formValues.value.name = '';
+//             formValues.value.email = '';
+//             formValues.value.phone = '';
+//             formValues.value.address = '';
+//         },
+//         onError: (error) => {
+//             hideLoader();
+//             console.error('Error occurred:', error);
+//         }
+//     });
 
-}
+// }
 
-const onDelete = async (id) => {
-    await submitActions({
-        title: "Are you sure you want to delete?",
-        text: "This can\'t be undone!",
-        icon: "warning",
-        axiosConfig: {
-            method: 'delete',
-            url: 'api/userdetails/destroy/' + id,
-        },
-        onBefore: () => {
-            showLoader('Deleting...');
-        },
-        onSuccess: (response) => {
-            fetchData();
-        },
-        onError: (error) => {
-            hideLoader();
-            console.error('Error occurred:', error);
-        }
-    });
-}
+// const onDelete = async (id) => {
+//     await submitActions({
+//         title: "Are you sure you want to delete?",
+//         text: "This can\'t be undone!",
+//         icon: "warning",
+//         axiosConfig: {
+//             method: 'delete',
+//             url: 'api/userdetails/destroy/' + id,
+//         },
+//         onBefore: () => {
+//             showLoader('Deleting...');
+//         },
+//         onSuccess: (response) => {
+//             fetchData();
+//         },
+//         onError: (error) => {
+//             hideLoader();
+//             console.error('Error occurred:', error);
+//         }
+//     });
+// }
 
-onMounted(() => {
-    fetchData();
-});
+// onMounted(() => {
+//     fetchData();
+// });
 
 </script>
 
@@ -258,7 +258,6 @@ onMounted(() => {
     </div>
 
     <div class="p-5 mt-10 text-center">
-        {{ userCollection }}
         <DataTable :value="userCollection" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]"
             tableStyle="min-width: 50rem"
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
