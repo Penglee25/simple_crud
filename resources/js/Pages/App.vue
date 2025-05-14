@@ -1,16 +1,16 @@
 <script setup>
-// import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { ref, onMounted, toRaw } from 'vue';
 
-// import 'primeicons/primeicons.css'
+import 'primeicons/primeicons.css'
 
-// import Button from 'primevue/button';
-// import Dialog from 'primevue/dialog';
-// import InputText from 'primevue/inputtext';
-// import { Form } from '@primevue/forms';
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import { Form } from '@primevue/forms';
 
-// import DataTable from 'primevue/datatable';
-// import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 
@@ -200,9 +200,9 @@ onMounted(() => {
 
 <template>
 
-    <!-- <Head title="CRUD" /> -->
+    <Head title="CRUD" />
     TANGINA MO
-    <!-- <div class="text-center mt-10">
+    <div class="text-center mt-10">
         <Button label="Create User" @click="onShowModal = true; onModalText = 'Create User'" />
         <div class="card flex justify-center">
             <Dialog v-model:visible="onShowModal" modal header="Edit Profile" :style="{ width: '25rem' }">
@@ -255,9 +255,9 @@ onMounted(() => {
 
             </Dialog>
         </div>
-    </div> -->
+    </div>
 
-    <!-- <div class="p-5 mt-10 text-center">
+    <div class="p-5 mt-10 text-center">
         <DataTable :value="userCollection" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]"
             tableStyle="min-width: 50rem"
             paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
@@ -283,7 +283,7 @@ onMounted(() => {
                 <span >No Users found.</span>
             </template>
         </DataTable>
-    </div> -->
+    </div>
 
    
 </template>

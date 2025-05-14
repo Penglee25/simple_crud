@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import PrimeUI from 'tailwindcss-primeui';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -20,5 +21,6 @@ export default {
         },
     },
 
-    plugins: [forms],
+    darkMode: ['selector', '[class~="my-app-dark"]'],  
+    plugins: [forms, PrimeUI],
 };
