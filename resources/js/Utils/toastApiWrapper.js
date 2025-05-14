@@ -29,12 +29,6 @@ export async function submitActions({
             cancelButtonColor: cancelButtonColor,
             showCancelButton: true,
             reverseButtons: reverseButtons,
-            didOpen: () => {
-                const popup = Swal.getPopup();
-                const container = Swal.getContainer();
-                if (popup) popup.style.zIndex = "9999";
-                if (container) container.style.zIndex = "9998";
-            },
         });
 
         if (!result.isConfirmed) return;
@@ -78,13 +72,6 @@ export function showLoader(message) {
         title: message || "Processing...",
         allowOutsideClick: false,
         timerProgressBar: true,
-        didOpen: () => {
-            Swal.showLoading();
-            const popup = Swal.getPopup();
-            const container = Swal.getContainer();
-            if (popup) popup.style.zIndex = "9999";
-            if (container) container.style.zIndex = "9998";
-        },
     });
 }
 
