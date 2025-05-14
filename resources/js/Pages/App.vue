@@ -27,170 +27,170 @@ import { Head, Link } from '@inertiajs/vue3';
 //     address: '',
 // });
 
-const validation = ({ values }) => {
-    const errors = {
-        name: [],
-        email: [],
-        phone: [],
-        address: [],
-    };
+// const validation = ({ values }) => {
+//     const errors = {
+//         name: [],
+//         email: [],
+//         phone: [],
+//         address: [],
+//     };
 
-    if (!values.name) {
-        errors.name.push({ type: 'required', message: 'name is required.' });
-    }
+//     if (!values.name) {
+//         errors.name.push({ type: 'required', message: 'name is required.' });
+//     }
 
-    if (!values.email) {
-        errors.email.push({ type: 'required', message: 'email is required.' });
-    }
+//     if (!values.email) {
+//         errors.email.push({ type: 'required', message: 'email is required.' });
+//     }
 
-    if (!values.phone) {
-        errors.phone.push({ type: 'required', message: 'phone is required.' });
-    }
+//     if (!values.phone) {
+//         errors.phone.push({ type: 'required', message: 'phone is required.' });
+//     }
 
-    if (!values.address) {
-        errors.address.push({ type: 'required', message: 'address is required.' });
-    }
+//     if (!values.address) {
+//         errors.address.push({ type: 'required', message: 'address is required.' });
+//     }
 
-    return {
-        values,
-        errors
-    };
-};
+//     return {
+//         values,
+//         errors
+//     };
+// };
 
-const onShowModalUpdate = (data) => {
-    onShowModal.value = true;
-    onModalText.value = 'Update User';
-    formValues.value.id = data.id;
-    formValues.value.name = data.name;
-    formValues.value.email = data.email;
-    formValues.value.phone = data.phone;
-    formValues.value.address = data.address;
-}
+// const onShowModalUpdate = (data) => {
+//     onShowModal.value = true;
+//     onModalText.value = 'Update User';
+//     formValues.value.id = data.id;
+//     formValues.value.name = data.name;
+//     formValues.value.email = data.email;
+//     formValues.value.phone = data.phone;
+//     formValues.value.address = data.address;
+// }
 
-const onCancelModal = () => {
-    onShowModal.value = false;
-    formValues.value.id = null;
-    formValues.value.name = '';
-    formValues.value.email = '';
-    formValues.value.phone = '';
-    formValues.value.address = '';
-}
+// const onCancelModal = () => {
+//     onShowModal.value = false;
+//     formValues.value.id = null;
+//     formValues.value.name = '';
+//     formValues.value.email = '';
+//     formValues.value.phone = '';
+//     formValues.value.address = '';
+// }
 
-const fetchData = async () => {
+// const fetchData = async () => {
 
-    try {
-        const response = await axios.get('api/userdetails/fetch');
-        userCollection.value = response.data;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-    }
-}
+//     try {
+//         const response = await axios.get('api/userdetails/fetch');
+//         userCollection.value = response.data;
+//     } catch (error) {
+//         console.error('Error fetching users:', error);
+//     }
+// }
 
-const onFormSubmit = ({ valid }) => {
+// const onFormSubmit = ({ valid }) => {
 
-    if (valid) {
-        if (onModalText.value === 'Create User') {
-            onFormCreate();
-        }
+//     if (valid) {
+//         if (onModalText.value === 'Create User') {
+//             onFormCreate();
+//         }
 
-        if (onModalText.value === 'Update User') {
-            onFormUpdate(formValues);
-        }
+//         if (onModalText.value === 'Update User') {
+//             onFormUpdate(formValues);
+//         }
 
-    }
-}
+//     }
+// }
 
-const onFormCreate = async () => {
+// const onFormCreate = async () => {
 
-    await submitActions({
-        title: 'Submit Form?',
-        text: 'Are you sure you want to submit?',
-        icon: 'warning',
-        axiosConfig: {
-            method: 'post',
-            url: 'api/userdetails/store',
-            data: toRaw(formValues._value),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        },
-        onBefore: () => {
-            showLoader('Please wait...');
-        },
-        onSuccess: (response) => {
-            fetchData();
-            onShowModal.value = false;
-            formValues.value.name = '';
-            formValues.value.email = '';
-            formValues.value.phone = '';
-            formValues.value.address = '';
-        },
-        onError: (error) => {
-            hideLoader();
-            console.error('Error occurred:', error);
-        }
-    });
+//     await submitActions({
+//         title: 'Submit Form?',
+//         text: 'Are you sure you want to submit?',
+//         icon: 'warning',
+//         axiosConfig: {
+//             method: 'post',
+//             url: 'api/userdetails/store',
+//             data: toRaw(formValues._value),
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         },
+//         onBefore: () => {
+//             showLoader('Please wait...');
+//         },
+//         onSuccess: (response) => {
+//             fetchData();
+//             onShowModal.value = false;
+//             formValues.value.name = '';
+//             formValues.value.email = '';
+//             formValues.value.phone = '';
+//             formValues.value.address = '';
+//         },
+//         onError: (error) => {
+//             hideLoader();
+//             console.error('Error occurred:', error);
+//         }
+//     });
 
-}
+// }
 
 
-const onFormUpdate = async (form) => {
+// const onFormUpdate = async (form) => {
 
-    const plainValues = toRaw(form._value)
+//     const plainValues = toRaw(form._value)
 
-    await submitActions({
-        title: "Are you sure?",
-        text: "Update User?",
-        icon: 'info',
-        axiosConfig: {
-            method: 'put',
-            url: 'api/userdetails/update/' + form._value.id,
-            data: plainValues,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        },
-        onBefore: () => {
-            showLoader('Updating...');
-        },
-        onSuccess: (response) => {
-            fetchData();
-            onShowModal.value = false;
-            onModalText.value = '';
-            formValues.value.name = '';
-            formValues.value.email = '';
-            formValues.value.phone = '';
-            formValues.value.address = '';
-        },
-        onError: (error) => {
-            hideLoader();
-            console.error('Error occurred:', error);
-        }
-    });
+//     await submitActions({
+//         title: "Are you sure?",
+//         text: "Update User?",
+//         icon: 'info',
+//         axiosConfig: {
+//             method: 'put',
+//             url: 'api/userdetails/update/' + form._value.id,
+//             data: plainValues,
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         },
+//         onBefore: () => {
+//             showLoader('Updating...');
+//         },
+//         onSuccess: (response) => {
+//             fetchData();
+//             onShowModal.value = false;
+//             onModalText.value = '';
+//             formValues.value.name = '';
+//             formValues.value.email = '';
+//             formValues.value.phone = '';
+//             formValues.value.address = '';
+//         },
+//         onError: (error) => {
+//             hideLoader();
+//             console.error('Error occurred:', error);
+//         }
+//     });
 
-}
+// }
 
-const onDelete = async (id) => {
-    await submitActions({
-        title: "Are you sure you want to delete?",
-        text: "This can\'t be undone!",
-        icon: "warning",
-        axiosConfig: {
-            method: 'delete',
-            url: 'api/userdetails/destroy/' + id,
-        },
-        onBefore: () => {
-            showLoader('Deleting...');
-        },
-        onSuccess: (response) => {
-            fetchData();
-        },
-        onError: (error) => {
-            hideLoader();
-            console.error('Error occurred:', error);
-        }
-    });
-}
+// const onDelete = async (id) => {
+//     await submitActions({
+//         title: "Are you sure you want to delete?",
+//         text: "This can\'t be undone!",
+//         icon: "warning",
+//         axiosConfig: {
+//             method: 'delete',
+//             url: 'api/userdetails/destroy/' + id,
+//         },
+//         onBefore: () => {
+//             showLoader('Deleting...');
+//         },
+//         onSuccess: (response) => {
+//             fetchData();
+//         },
+//         onError: (error) => {
+//             hideLoader();
+//             console.error('Error occurred:', error);
+//         }
+//     });
+// }
 
 // onMounted(() => {
 //     fetchData();
