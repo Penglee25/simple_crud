@@ -198,6 +198,7 @@ const onDelete = async (id) => {
 }
 
 onMounted(() => {
+    console.log('Minimal App.vue page mounted');
     fetchData();
 });
 
@@ -225,23 +226,24 @@ onMounted(() => {
 
                     <div class="flex flex-col gap-3">
                         <div class="relative">
-                            <InputLabel for="name" value="Name" required/>
-                            <TextInput v-model="formValues.name" type="text" id="name" class="w-full mt-1" required/>
+                            <InputLabel for="name" value="Name" required />
+                            <TextInput v-model="formValues.name" type="text" id="name" class="w-full mt-1" required />
                         </div>
 
                         <div class="relative">
-                            <InputLabel for="email" value="Email" required/>
-                            <TextInput v-model="formValues.email" type="text" id="email" class="w-full mt-1" required/>
+                            <InputLabel for="email" value="Email" required />
+                            <TextInput v-model="formValues.email" type="text" id="email" class="w-full mt-1" required />
                         </div>
 
                         <div class="relative">
-                            <InputLabel for="phone" value="Phone" required/>
-                            <TextInput v-model="formValues.phone" type="text" id="phone" class="w-full mt-1" required/>
+                            <InputLabel for="phone" value="Phone" required />
+                            <TextInput v-model="formValues.phone" type="text" id="phone" class="w-full mt-1" required />
                         </div>
 
                         <div class="relative">
-                            <InputLabel for="address" value="Address" required/>
-                            <TextInput v-model="formValues.address" type="text" id="address" class="w-full mt-1" required/>
+                            <InputLabel for="address" value="Address" required />
+                            <TextInput v-model="formValues.address" type="text" id="address" class="w-full mt-1"
+                                required />
                         </div>
                     </div>
 
