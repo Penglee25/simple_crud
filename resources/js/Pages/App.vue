@@ -206,7 +206,7 @@ onMounted(() => {
 
     <div class="text-center mt-10">
         <Button label="Create User" @click="onShowModal = true; onModalText = 'Create User'" />
-        <div class="card flex justify-center">
+        <!-- <div class="card flex justify-center">
             <Dialog v-model:visible="onShowModal" modal header="Edit Profile" :style="{ width: '25rem' }">
                 <template #header>
                     <div class="inline-flex items-center justify-center gap-2">
@@ -256,7 +256,7 @@ onMounted(() => {
 
 
             </Dialog>
-        </div>
+        </div> -->
     </div>
 
     <div class="p-5 mt-10 text-center">
