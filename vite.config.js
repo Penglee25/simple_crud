@@ -6,10 +6,6 @@ export default defineConfig({
     server: {
         https: true,
     },
-    build: {
-        manifest: true, // Ensure manifest is generated
-        outDir: "public/build", // Ensure the build output directory is correct
-    },
     plugins: [
         laravel({
             input: "resources/js/app.js",
