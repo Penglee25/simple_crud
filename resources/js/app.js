@@ -24,15 +24,7 @@ createInertiaApp({
         vueApp
             .use(plugin)
             .use(ZiggyVue)
-            .use(PrimeVue, {
-                theme: {
-                    preset: Aura,
-                    options: {
-                        // darkModeSelector: 'light',
-                        darkModeSelector: ".my-app-dark",
-                    },
-                },
-            })
+            .use(PrimeVue)
             .mount(el);
     },
     progress: {
