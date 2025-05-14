@@ -274,9 +274,9 @@ onMounted(() => {
             <Column style="width: auto">
                 <template #body="{ data }">
                     <div class="flex gap-2">
-                        <Button icon="pi pi-pen-to-square" @click="onShowModalUpdate(data)" severity="secondary"
+                        <Button icon="pi pi-pen-to-square" @click="onShowModalUpdate(data)" severity="info"
                             rounded></Button>
-                        <Button icon="pi pi-trash" @click="onDelete(data.id)" severity="secondary" rounded></Button>
+                        <Button icon="pi pi-trash" @click="onDelete(data.id)" severity="danger" rounded></Button>
                     </div>
                 </template>
             </Column>
