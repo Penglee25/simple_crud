@@ -48,18 +48,34 @@ class UserDetailsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show()
-    {
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+
+            UserDetails::where('id', $id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+            ]);
+
+            return response('User successfully updated.', 200)
+                ->header('Content-Type', 'text/plain');
+
+        } catch (\Throwable $e) {
+            Log::error('Store Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An unexpected error occurred.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+        
     }
 
     /**
