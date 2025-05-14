@@ -14,18 +14,18 @@ import { ref, onMounted, toRaw } from 'vue';
 
 // import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 
-const onShowModal = ref(false);
-const onModalText = ref("");
-const onLoadingSubmit = ref(false);
-const userCollection = ref([]);
+// const onShowModal = ref(false);
+// const onModalText = ref("");
+// const onLoadingSubmit = ref(false);
+// const userCollection = ref([]);
 
-const formValues = ref({
-    id: null,
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-});
+// const formValues = ref({
+//     id: null,
+//     name: '',
+//     email: '',
+//     phone: '',
+//     address: '',
+// });
 
 const validation = ({ values }) => {
     const errors = {
