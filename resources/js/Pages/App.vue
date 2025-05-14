@@ -201,8 +201,8 @@ onMounted(() => {
 <template>
 
     <Head title="CRUD" />
-
-    <div class="text-center mt-10">
+    TANGINA MO
+    <!-- <div class="text-center mt-10">
         <Button label="Create User" @click="onShowModal = true; onModalText = 'Create User'" />
         <div class="card flex justify-center">
             <Dialog v-model:visible="onShowModal" modal header="Edit Profile" :style="{ width: '25rem' }">
@@ -284,7 +284,7 @@ onMounted(() => {
                 <span >No Users found.</span>
             </template>
         </DataTable>
-    </div>
+    </div> -->
 
     <!-- <Button label="Show" @click="show()" />
     <Toast /> -->
