@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import { ref, onMounted, toRaw } from 'vue';
+// import { ref, onMounted, toRaw } from 'vue';
 
 // import 'primeicons/primeicons.css'
 
@@ -192,9 +192,9 @@ const onDelete = async (id) => {
     });
 }
 
-onMounted(() => {
-    fetchData();
-});
+// onMounted(() => {
+//     fetchData();
+// });
 
 </script>
 
