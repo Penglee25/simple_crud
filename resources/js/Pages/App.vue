@@ -19,7 +19,7 @@ import 'primeicons/primeicons.css'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
-// import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
+import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 
 const onShowModal = ref(false);
 const onModalText = ref("");
