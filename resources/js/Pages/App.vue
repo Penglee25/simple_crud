@@ -9,12 +9,12 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 
-import 'primeicons/primeicons.css'
+// import 'primeicons/primeicons.css'
 
-// import Button from 'primevue/button';
-// import Dialog from 'primevue/dialog';
-// import InputText from 'primevue/inputtext';
-// import { Form } from '@primevue/forms';
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import { Form } from '@primevue/forms';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -198,15 +198,15 @@ const onDelete = async (id) => {
 }
 
 onMounted(() => {
-    console.log('Minimal App.vue page mounted');
-    fetchData();
+    console.log('sdasdddd App.vue page mounted');
+     fetchData();
 });
 
 </script>
 
 <template>
 
-    <Head title="CRUD" />
+    <!-- <Head title="CRUD" /> -->
     TANGINA MO
     <div class="text-center mt-10">
         <PrimaryButton label="Create User" @click="onShowModal = true; onModalText = 'Create User'">
