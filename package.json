@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "sweetalert2": "^11.7.3",
-        "vite-plugin-pages": "^0.33.0"
+        "vite-plugin-pages": "^0.33.0",
+        "vue3-easy-data-table": "^1.5.47"
     }
 }
