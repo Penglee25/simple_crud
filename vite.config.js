@@ -1,21 +1,15 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
+import { visualizer } from "rollup-plugin-visualizer";
+import Pages from "vite-plugin-pages";
 
 export default defineConfig({
     base: "/",
-    build: {
-        sourcemap: true, // or 'hidden'
-        outDir: "public/build", // default for laravel-vite-plugin
-        emptyOutDir: true,
-    },
-    server: {
-        port: 4173, // make this match the port you're accessing
-        strictPort: true, // fail if port is busy
-    },
+
     plugins: [
         laravel({
-            input: "resources/js/app.js",
+            input: ["resources/css/app.css", "resources/js/app.js"],
             refresh: true,
         }),
         vue({
@@ -26,5 +20,10 @@ export default defineConfig({
                 },
             },
         }),
+        Pages({
+            dirs: "resources/js/Pages",
+            exclude: ["**/Auth/*.vue"], // 👈 exclude Auth pages
+        }),
+        visualizer({ open: false }),
     ],
 });

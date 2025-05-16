@@ -9,15 +9,6 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 
-// import 'primeicons/primeicons.css'
-
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import { Form } from '@primevue/forms';
-
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 
 import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 
