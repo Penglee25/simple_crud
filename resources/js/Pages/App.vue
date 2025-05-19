@@ -1,6 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
-import { ref, onMounted, toRaw } from 'vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref, onMounted, toRaw, watch } from 'vue';
 import axios from "axios";
 
 import Modal from '@/Components/Modal.vue';
@@ -18,41 +18,51 @@ import { submitActions, showLoader, hideLoader } from '@/Utils/toastApiWrapper';
 const onShowModal = ref(false);
 const onModalText = ref("");
 
-const formValues = ref({
+const formValues = useForm({
     id: null,
+    photo: null,
     name: '',
     email: '',
     phone: '',
     address: '',
 });
 
+const previewImg = ref(null);
+
 const headers = [
     { text: "Name", value: "name" },
     { text: "Email", value: "email" },
     { text: "Phone", value: "phone", sortable: true },
     { text: "Address", value: "address", sortable: true },
+    { text: "Pic", value: "photo" },
     { text: "", value: "action", width: 30 },
 ];
 
 const items = ref([]);
 
 const onShowModalUpdate = (data) => {
+    console.log(data);
     onShowModal.value = true;
     onModalText.value = 'Update User';
-    formValues.value.id = data.id;
-    formValues.value.name = data.name;
-    formValues.value.email = data.email;
-    formValues.value.phone = data.phone;
-    formValues.value.address = data.address;
+
+    previewImg.value = data.photo
+        ? `${import.meta.env.VITE_USER_FILE}${data.photo}`
+        : null;
+
+    formValues.id = data.id;
+    formValues.name = data.name;
+    formValues.photo = data.photo;
+    formValues.email = data.email;
+    formValues.phone = data.phone;
+    formValues.address = data.address;
+    console.log(formValues);
+
 }
 
 const onCancelModal = () => {
     onShowModal.value = false;
-    formValues.value.id = null;
-    formValues.value.name = '';
-    formValues.value.email = '';
-    formValues.value.phone = '';
-    formValues.value.address = '';
+    formValues.reset();
+    previewImg.value = null;
 }
 
 const fetchData = async () => {
@@ -79,17 +89,25 @@ const onFormSubmit = () => {
 
 const onFormCreate = async () => {
 
+    const formData = new FormData();
+    formData.append('id', null);
+    formData.append('name', formValues.name);
+    formData.append('email', formValues.email);
+    formData.append('phone', formValues.phone);
+    formData.append('address', formValues.address);
+    if (formValues.photo) {
+        formData.append('photo', formValues.photo);
+    }
+
     await submitActions({
         title: 'Submit Form?',
         text: 'Are you sure you want to submit?',
         icon: 'warning',
         axiosConfig: {
             method: 'post',
+            headers: { "Content-Type": "multipart/form-data" },
             url: 'api/userdetails/store',
-            data: toRaw(formValues._value),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            data: formData,
         },
         onBefore: () => {
             showLoader('Please wait...');
@@ -97,10 +115,8 @@ const onFormCreate = async () => {
         onSuccess: (response) => {
             fetchData();
             onShowModal.value = false;
-            formValues.value.name = '';
-            formValues.value.email = '';
-            formValues.value.phone = '';
-            formValues.value.address = '';
+            formValues.reset();
+            previewImg.value = null;
         },
         onError: (error) => {
             hideLoader();
@@ -113,19 +129,27 @@ const onFormCreate = async () => {
 
 const onFormUpdate = async (form) => {
 
-    const plainValues = toRaw(form._value)
+    const formData = new FormData();
+    formData.append('id', formValues.id);
+    formData.append('name', formValues.name);
+    formData.append('email', formValues.email);
+    formData.append('phone', formValues.phone);
+    formData.append('address', formValues.address);
+    if (formValues.photo) {
+        formData.append('photo', formValues.photo);
+    }
+
+    formData.append('_method', 'PUT');
 
     await submitActions({
         title: "Are you sure?",
         text: "Update User?",
         icon: 'info',
         axiosConfig: {
-            method: 'put',
-            url: 'api/userdetails/update/' + form._value.id,
-            data: plainValues,
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: 'post',
+            url: 'api/userdetails/update/' + formValues.id,
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
         },
         onBefore: () => {
             showLoader('Updating...');
@@ -134,10 +158,8 @@ const onFormUpdate = async (form) => {
             fetchData();
             onShowModal.value = false;
             onModalText.value = '';
-            formValues.value.name = '';
-            formValues.value.email = '';
-            formValues.value.phone = '';
-            formValues.value.address = '';
+            formValues.reset();
+            previewImg.value = null;
         },
         onError: (error) => {
             hideLoader();
@@ -169,9 +191,24 @@ const onDelete = async (id) => {
     });
 }
 
+const loadFile = (event) => {
+
+    const file = event.target.files[0];
+    if (file) {
+        formValues.photo = file;
+        previewImg.value = URL.createObjectURL(file);
+    } else {
+        formValues.photo = null;
+        previewImg.value = null;
+        console.log('No file selected');
+    }
+};
+
+
 onMounted(() => {
     fetchData();
 });
+
 
 </script>
 
@@ -192,6 +229,23 @@ onMounted(() => {
                 <hr class="my-3" />
 
                 <form @submit.prevent="onFormSubmit">
+
+                    <div class="flex items-center justify-center space-x-6">
+                        <div class="shrink-0">
+                            <img id='preview_img' class="h-16 w-16 object-cover rounded-full border"
+                                :src="previewImg ? previewImg : 'https://lh3.googleusercontent.com/a-/AFdZucpC_6WFBIfaAbPHBwGM9z8SxyM1oV4wB4Ngwp_UyQ=s96-c'"
+                                alt="Current profile photo" />
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="sr-only">Choose profile photo</span>
+                            <input type="file" @change="loadFile" accept="image/jpeg,image/png,image/bmp" class="block w-full text-sm text-slate-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-violet-50 file:text-violet-700
+                                hover:file:bg-violet-100" />
+                        </div>
+                    </div>
 
 
                     <div class="flex flex-col gap-3">
@@ -237,6 +291,12 @@ onMounted(() => {
         <Vue3EasyDataTable :headers="headers" :items="items" alternating table-class-name="customize-table"
             class="cursor-pointer">
 
+            <template #item-photo="item">
+                <img id='preview_img' class="h-16 w-16 object-cover rounded-full border"
+                    :src="item.photo ? 'storage/'+item.photo : 'https://lh3.googleusercontent.com/a-/AFdZucpC_6WFBIfaAbPHBwGM9z8SxyM1oV4wB4Ngwp_UyQ=s96-c'"
+                    alt="Current profile photo" />
+
+            </template>
             <template #item-action="item">
                 <div class="flex gap-1 p-2">
                     <button @click="onShowModalUpdate(item)"
