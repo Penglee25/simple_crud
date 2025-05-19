@@ -41,7 +41,6 @@ const headers = [
 const items = ref([]);
 
 const onShowModalUpdate = (data) => {
-    console.log(data);
     onShowModal.value = true;
     onModalText.value = 'Update User';
 
